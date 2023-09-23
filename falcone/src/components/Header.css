@@ -1,0 +1,48 @@
+.header-layout {
+  /* position: fixed; */
+  width: 100%;
+  height: 5rem;
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: row;
+}
+
+.title-layout {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+.header-font {
+  font-weight: 700;
+  font-size: 3rem;
+  word-break: none;
+}
+
+.button-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  height: 100%;
+  align-items: center;
+}
+
+.reset-button {
+  margin: 6px;
+  width: fit-content;
+  padding: 1rem;
+}
+
+.geektrust-home-button {
+  margin: 6px;
+  width: fit-content;
+  padding: 0.5rem 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .header-font {
+    font-size: 2rem;
+  }
+}
