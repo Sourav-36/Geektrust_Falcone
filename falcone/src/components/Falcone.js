@@ -49,8 +49,6 @@ const Falcone = () => {
     })();
   }, []);
 
-  console.log(formData);
-
   return (
     <>
       <Header
@@ -526,7 +524,6 @@ const Falcone = () => {
                   }
                 );
                 let jsonResponse = await findQueenResponse.json();
-                console.log(jsonResponse);
                 if (jsonResponse.status === "success") {
                   window.localStorage.setItem(
                     "planet",

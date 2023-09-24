@@ -38,7 +38,6 @@
 }
 
 .time-layout {
-  height: 20vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -52,7 +51,7 @@
 }
 
 .find-button-layout {
-  height: 10vh;
+  height: 15vh;
   width: 100%;
   display: flex;
   justify-content: center;

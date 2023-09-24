@@ -34,6 +34,7 @@ const Header = ({
       <div className="button-layout">
         <button
           className="reset-button"
+          disabled={window.location.pathname === "/result"}
           onClick={async (e) => {
             setPlanet1([]);
             setVehicle1([]);
