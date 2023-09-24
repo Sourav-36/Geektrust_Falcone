@@ -24,3 +24,44 @@
   width: 10rem;
   margin: 2rem;
 }
+
+.label-font {
+  opacity: 0.5;
+}
+
+.radio-list-layout {
+  margin-top: 1rem;
+}
+
+.radio-button-layout {
+  margin: 0.25rem 0rem;
+}
+
+.time-layout {
+  height: 20vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-font {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.find-button-layout {
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.find-button {
+  padding: 0.5rem;
+  width: 10rem;
+  font-weight: 700;
+  cursor: pointer;
+}
