@@ -49,11 +49,30 @@ const Falcone = () => {
     })();
   }, []);
 
-  // console.log(formData);
+  console.log(formData);
 
   return (
     <>
-      <Header />
+      <Header
+        setPlanet1={setPlanets}
+        setVehicle1={setVehicles}
+        setSelected1={setSelected}
+        setDistanceFromPlanet1={setDistanceFromPlanet}
+        setPlanet2={setPlanets2}
+        setVehicle2={setVehicles2}
+        setSelected2={setSelected2}
+        setDistanceFromPlanet2={setDistanceFromPlanet2}
+        setPlanet3={setPlanets3}
+        setVehicle3={setVehicles3}
+        setSelected3={setSelected3}
+        setDistanceFromPlanet3={setDistanceFromPlanet3}
+        setPlanet4={setPlanets4}
+        setVehicle4={setVehicles4}
+        setSelected4={setSelected4}
+        setDistanceFromPlanet4={setDistanceFromPlanet4}
+        setTimeTaken={setTimeTaken}
+        setFormData={setFormData}
+      />
       <div className="body-layout">
         <div className="body-font">Select planets you want to search in: </div>
       </div>
@@ -64,7 +83,13 @@ const Falcone = () => {
             name="planets"
             id="1"
             onChange={async (e) => {
+              if (formData.planet_names.length === 1) {
+                formData.planet_names.pop();
+              }
               let planetNames = [];
+              formData.planet_names.forEach((data) => {
+                planetNames.push(data);
+              });
               planetNames.push(e.target.value);
 
               setFormData({
@@ -161,6 +186,9 @@ const Falcone = () => {
             name="planets2"
             id="2"
             onChange={async (e) => {
+              if (formData.planet_names.length === 2) {
+                formData.planet_names.pop();
+              }
               let planetNames = [];
               formData.planet_names.forEach((data) => {
                 planetNames.push(data);
@@ -202,7 +230,10 @@ const Falcone = () => {
                     name="vehicles2"
                     value={`${obj.name}`}
                     checked={ind === selected2}
-                    disabled={obj.max_distance < distanceFromPlanet2}
+                    disabled={
+                      obj.max_distance < distanceFromPlanet2 ||
+                      obj.total_no === 0
+                    }
                     onChange={(e) => {
                       setSelected2((prev) => {
                         return ind === prev ? null : ind;
@@ -247,7 +278,10 @@ const Falcone = () => {
                   />
                   <label
                     className={
-                      obj.max_distance < distanceFromPlanet2 ? "label-font" : ""
+                      obj.max_distance < distanceFromPlanet2 ||
+                      obj.total_no === 0
+                        ? "label-font"
+                        : ""
                     }
                   >{`${obj.name} (${obj.total_no})`}</label>
                 </div>
@@ -262,6 +296,9 @@ const Falcone = () => {
             name="planets3"
             id="3"
             onChange={async (e) => {
+              if (formData.planet_names.length === 3) {
+                formData.planet_names.pop();
+              }
               let planetNames = [];
               formData.planet_names.forEach((data) => {
                 planetNames.push(data);
@@ -301,7 +338,10 @@ const Falcone = () => {
                     name="vehicles3"
                     value={`${obj.name}`}
                     checked={ind === selected3}
-                    disabled={obj.max_distance < distanceFromPlanet3}
+                    disabled={
+                      obj.max_distance < distanceFromPlanet3 ||
+                      obj.total_no === 0
+                    }
                     onChange={(e) => {
                       setSelected3((prev) => {
                         return ind === prev ? null : ind;
@@ -346,7 +386,10 @@ const Falcone = () => {
                   />
                   <label
                     className={
-                      obj.max_distance < distanceFromPlanet3 ? "label-font" : ""
+                      obj.max_distance < distanceFromPlanet3 ||
+                      obj.total_no === 0
+                        ? "label-font"
+                        : ""
                     }
                   >{`${obj.name} (${obj.total_no})`}</label>
                 </div>
@@ -361,6 +404,9 @@ const Falcone = () => {
             name="planets4"
             id="4"
             onChange={async (e) => {
+              if (formData.planet_names.length === 4) {
+                formData.planet_names.pop();
+              }
               let planetNames = [];
               formData.planet_names.forEach((data) => {
                 planetNames.push(data);
@@ -401,7 +447,10 @@ const Falcone = () => {
                     name="vehicles4"
                     value={`${obj.name}`}
                     checked={ind === selected4}
-                    disabled={obj.max_distance < distanceFromPlanet4}
+                    disabled={
+                      obj.max_distance < distanceFromPlanet4 ||
+                      obj.total_no === 0
+                    }
                     onChange={(e) => {
                       setSelected4((prev) => {
                         return ind === prev ? null : ind;
@@ -442,7 +491,10 @@ const Falcone = () => {
                   />
                   <label
                     className={
-                      obj.max_distance < distanceFromPlanet4 ? "label-font" : ""
+                      obj.max_distance < distanceFromPlanet4 ||
+                      obj.total_no === 0
+                        ? "label-font"
+                        : ""
                     }
                   >{`${obj.name} (${obj.total_no})`}</label>
                 </div>
@@ -499,8 +551,8 @@ const Falcone = () => {
                     jsonResponse.planet_name
                   );
                   window.localStorage.setItem("time", timeTaken);
-                  history.push("/result", { from: "Falcone" });
                 }
+                history.push("/result", { from: "Falcone" });
               } catch (err) {
                 if (err.status === 400) console.log(err.error);
               }

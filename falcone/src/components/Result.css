@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.message-font {
+.success-font {
   font-weight: 700;
   font-size: 1.5rem;
   text-align: center;
@@ -16,7 +16,7 @@
 .data-layout {
   display: flex;
   flex-direction: column;
-  margin: 2.5rem 0rem;
+  margin-top: 2.5rem;
 }
 
 .data-font {
@@ -33,7 +33,15 @@
   align-items: center;
 }
 
+.failure-font {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
 .start-button {
+  margin-top: 2.5rem;
   padding: 1rem;
   font-weight: 700;
+  cursor: pointer;
 }
