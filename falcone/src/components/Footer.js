@@ -4,9 +4,7 @@ const Footer = () => {
   return (
     <div className="footer-layout">
       <div className="content-layout">
-        <div className="footer-font">
-          Coding-problem: www.geektrust.in/finding-falcone
-        </div>
+        <div className="footer-font">Created by: Sourav Nayak</div>
       </div>
     </div>
   );

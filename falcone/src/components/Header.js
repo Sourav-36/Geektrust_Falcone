@@ -63,7 +63,14 @@ const Header = ({
         >
           Reset
         </button>
-        <button className="geektrust-home-button">Geektrust Home</button>
+        <button
+          className="geektrust-home-button"
+          onClick={() => {
+            window.open("https://www.geektrust.com/dashboard", "_blank");
+          }}
+        >
+          Geektrust Home
+        </button>
       </div>
     </div>
   );

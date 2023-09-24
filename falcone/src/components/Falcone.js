@@ -230,10 +230,7 @@ const Falcone = () => {
                     name="vehicles2"
                     value={`${obj.name}`}
                     checked={ind === selected2}
-                    disabled={
-                      obj.max_distance < distanceFromPlanet2 ||
-                      obj.total_no === 0
-                    }
+                    disabled={obj.max_distance < distanceFromPlanet2}
                     onChange={(e) => {
                       setSelected2((prev) => {
                         return ind === prev ? null : ind;
@@ -278,10 +275,7 @@ const Falcone = () => {
                   />
                   <label
                     className={
-                      obj.max_distance < distanceFromPlanet2 ||
-                      obj.total_no === 0
-                        ? "label-font"
-                        : ""
+                      obj.max_distance < distanceFromPlanet2 ? "label-font" : ""
                     }
                   >{`${obj.name} (${obj.total_no})`}</label>
                 </div>
@@ -338,10 +332,7 @@ const Falcone = () => {
                     name="vehicles3"
                     value={`${obj.name}`}
                     checked={ind === selected3}
-                    disabled={
-                      obj.max_distance < distanceFromPlanet3 ||
-                      obj.total_no === 0
-                    }
+                    disabled={obj.max_distance < distanceFromPlanet3}
                     onChange={(e) => {
                       setSelected3((prev) => {
                         return ind === prev ? null : ind;
@@ -386,10 +377,7 @@ const Falcone = () => {
                   />
                   <label
                     className={
-                      obj.max_distance < distanceFromPlanet3 ||
-                      obj.total_no === 0
-                        ? "label-font"
-                        : ""
+                      obj.max_distance < distanceFromPlanet3 ? "label-font" : ""
                     }
                   >{`${obj.name} (${obj.total_no})`}</label>
                 </div>
@@ -447,10 +435,7 @@ const Falcone = () => {
                     name="vehicles4"
                     value={`${obj.name}`}
                     checked={ind === selected4}
-                    disabled={
-                      obj.max_distance < distanceFromPlanet4 ||
-                      obj.total_no === 0
-                    }
+                    disabled={obj.max_distance < distanceFromPlanet4}
                     onChange={(e) => {
                       setSelected4((prev) => {
                         return ind === prev ? null : ind;
@@ -491,10 +476,7 @@ const Falcone = () => {
                   />
                   <label
                     className={
-                      obj.max_distance < distanceFromPlanet4 ||
-                      obj.total_no === 0
-                        ? "label-font"
-                        : ""
+                      obj.max_distance < distanceFromPlanet4 ? "label-font" : ""
                     }
                   >{`${obj.name} (${obj.total_no})`}</label>
                 </div>
