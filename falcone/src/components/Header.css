@@ -45,4 +45,39 @@
   .header-font {
     font-size: 2rem;
   }
+
+  .button-layout {
+    flex-direction: column;
+  }
+
+  .reset-button {
+    padding: 0.2rem;
+    margin: 3px;
+  }
+
+  .geektrust-home-button {
+    padding: 0.1rem 0.3rem;
+    margin: 3px;
+  }
+}
+
+@media (max-width: 375px) {
+  .header-font {
+    font-size: 1.5rem;
+  }
+
+  .button-layout {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .reset-button {
+    padding: 0.2rem;
+    font-size: 0.6rem;
+  }
+
+  .geektrust-home-button {
+    padding: 0.1rem 0.3rem;
+    font-size: 0.6rem;
+  }
 }

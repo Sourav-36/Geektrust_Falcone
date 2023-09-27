@@ -1,5 +1,5 @@
 .body-layout {
-  height: 15vh;
+  height: 30vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -16,6 +16,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .each-dropdown-layout {
@@ -38,6 +39,7 @@
 }
 
 .time-layout {
+  height: 30vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -63,4 +65,10 @@
   width: 10rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+@media (max-width: 375px) {
+  .find-button {
+    width: 5rem;
+  }
 }

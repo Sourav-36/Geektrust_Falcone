@@ -1,14 +1,20 @@
 import Header from "./Header.js";
+import Planet1 from "./Planet1.js";
+import Planet2 from "./Planet2.js";
+import Planet3 from "./Planet3.js";
+import Planet4 from "./Planet4.js";
 import Footer from "./Footer.js";
 import "./Falcone.css";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 const Falcone = () => {
-  let [planets, setPlanets] = useState([]);
-  let [vehicles, setVehicles] = useState([]);
-  let [selected, setSelected] = useState(null);
-  let [distanceFromPlanet, setDistanceFromPlanet] = useState(0);
+  let [originalPlanetsList, setOriginalPlanetsList] = useState([]);
+
+  let [planets1, setPlanets1] = useState([]);
+  let [vehicles1, setVehicles1] = useState([]);
+  let [selected1, setSelected1] = useState(null);
+  let [distanceFromPlanet1, setDistanceFromPlanet1] = useState(0);
 
   let [planets2, setPlanets2] = useState([]);
   let [vehicles2, setVehicles2] = useState([]);
@@ -34,28 +40,29 @@ const Falcone = () => {
   });
 
   let fetchPlanets = async () => {
-    let response = await fetch("https://findfalcone.geektrust.com/planets");
-    return response.json();
+    try {
+      let response = await fetch("https://findfalcone.geektrust.com/planets");
+      return response.json();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  let fetchVehicles = async () => {
-    let response = await fetch("https://findfalcone.geektrust.com/vehicles");
-    return response.json();
-  };
   useEffect(() => {
     (async () => {
       let response = await fetchPlanets();
-      setPlanets(response);
+      setPlanets1(response);
+      setOriginalPlanetsList(response);
     })();
   }, []);
 
   return (
-    <>
+    <div>
       <Header
-        setPlanet1={setPlanets}
-        setVehicle1={setVehicles}
-        setSelected1={setSelected}
-        setDistanceFromPlanet1={setDistanceFromPlanet}
+        setPlanet1={setPlanets1}
+        setVehicle1={setVehicles1}
+        setSelected1={setSelected1}
+        setDistanceFromPlanet1={setDistanceFromPlanet1}
         setPlanet2={setPlanets2}
         setVehicle2={setVehicles2}
         setSelected2={setSelected2}
@@ -75,413 +82,71 @@ const Falcone = () => {
         <div className="body-font">Select planets you want to search in: </div>
       </div>
       <div className="form-layout">
-        <div className="each-dropdown-layout">
-          <label>Destination 1</label>
-          <select
-            name="planets"
-            id="1"
-            onChange={async (e) => {
-              if (formData.planet_names.length === 1) {
-                formData.planet_names.pop();
-              }
-              let planetNames = [];
-              formData.planet_names.forEach((data) => {
-                planetNames.push(data);
-              });
-              planetNames.push(e.target.value);
+        <Planet1
+          originalPlanetsList={originalPlanetsList}
+          planets={planets1}
+          setPlanets={setPlanets2}
+          vehicles={vehicles1}
+          setVehicles={setVehicles1}
+          selected={selected1}
+          setSelected={setSelected1}
+          distanceFromPlanet={distanceFromPlanet1}
+          setDistanceFromPlanet={setDistanceFromPlanet1}
+          formData={formData}
+          setFormData={setFormData}
+          timeTaken={timeTaken}
+          setTimeTaken={setTimeTaken}
+        />
 
-              setFormData({
-                ...formData,
-                planet_names: planetNames,
-              });
+        <Planet2
+          originalPlanetsList={originalPlanetsList}
+          planets={planets2}
+          setPlanets={setPlanets3}
+          prevVehicle={vehicles1}
+          vehicles={vehicles2}
+          setVehicles={setVehicles2}
+          selected={selected2}
+          setSelected={setSelected2}
+          distanceFromPlanet={distanceFromPlanet2}
+          setDistanceFromPlanet={setDistanceFromPlanet2}
+          formData={formData}
+          setFormData={setFormData}
+          timeTaken={timeTaken}
+          setTimeTaken={setTimeTaken}
+        />
 
-              planets.forEach((data) => {
-                if (data.name === e.target.value) {
-                  setDistanceFromPlanet(data.distance);
-                }
-              });
+        <Planet3
+          originalPlanetsList={originalPlanetsList}
+          planets={planets3}
+          setPlanets={setPlanets4}
+          prevVehicle={vehicles2}
+          vehicles={vehicles3}
+          setVehicles={setVehicles3}
+          selected={selected3}
+          setSelected={setSelected3}
+          distanceFromPlanet={distanceFromPlanet3}
+          setDistanceFromPlanet={setDistanceFromPlanet3}
+          formData={formData}
+          setFormData={setFormData}
+          timeTaken={timeTaken}
+          setTimeTaken={setTimeTaken}
+        />
 
-              let response = await fetchVehicles();
-              setVehicles(response);
-            }}
-          >
-            <option value="" default>
-              Select
-            </option>
-            {planets.map((obj) => {
-              return (
-                <option key={obj.name} id={`${obj.name}`} value={`${obj.name}`}>
-                  {obj.name}
-                </option>
-              );
-            })}
-          </select>
-
-          <div className="radio-list-layout">
-            {vehicles.map((obj, ind) => {
-              return (
-                <div key={ind} className="radio-button-layout">
-                  <input
-                    type="radio"
-                    name="vehicles"
-                    value={`${obj.name}`}
-                    checked={ind === selected}
-                    disabled={obj.max_distance < distanceFromPlanet}
-                    onChange={(e) => {
-                      setSelected((prev) => {
-                        return ind === prev ? null : ind;
-                      });
-
-                      let vehicleList = [];
-                      formData.vehicle_names.forEach((data) => {
-                        vehicleList.push(data);
-                      });
-                      vehicleList.push(e.target.value);
-                      setFormData({
-                        ...formData,
-                        vehicle_names: vehicleList,
-                      });
-
-                      let newVehicles = [];
-                      let speedOfVehicle;
-                      vehicles.forEach((obj) => {
-                        if (obj.name === e.target.value) {
-                          let obj1 = { ...obj };
-                          if (obj1.total_no > 0) obj1.total_no -= 1;
-                          newVehicles.push(obj1);
-                          speedOfVehicle = obj1.speed;
-                        } else {
-                          newVehicles.push(obj);
-                        }
-                      });
-
-                      setVehicles(newVehicles);
-
-                      let presentPlanetList = [];
-                      planets.forEach((obj) => {
-                        if (!formData.planet_names.includes(obj.name))
-                          presentPlanetList.push(obj);
-                        else setTimeTaken(obj.distance / speedOfVehicle);
-                      });
-
-                      setPlanets2(presentPlanetList);
-                    }}
-                  />
-                  <label
-                    className={
-                      obj.max_distance < distanceFromPlanet ? "label-font" : ""
-                    }
-                  >{`${obj.name} (${obj.total_no})`}</label>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="each-dropdown-layout">
-          <label>Destination 2</label>
-          <select
-            name="planets2"
-            id="2"
-            onChange={async (e) => {
-              if (formData.planet_names.length === 2) {
-                formData.planet_names.pop();
-              }
-              let planetNames = [];
-              formData.planet_names.forEach((data) => {
-                planetNames.push(data);
-              });
-              planetNames.push(e.target.value);
-
-              setFormData({
-                ...formData,
-                planet_names: planetNames,
-              });
-
-              planets.forEach((data) => {
-                if (data.name === e.target.value) {
-                  setDistanceFromPlanet2(data.distance);
-                }
-              });
-
-              setVehicles2(vehicles);
-            }}
-          >
-            <option value="" default>
-              Select
-            </option>
-            {planets2.map((obj) => {
-              return (
-                <option key={obj.name} id={`${obj.name}`} value={`${obj.name}`}>
-                  {obj.name}
-                </option>
-              );
-            })}
-          </select>
-
-          <div className="radio-list-layout">
-            {vehicles2.map((obj, ind) => {
-              return (
-                <div key={ind} className="radio-button-layout">
-                  <input
-                    type="radio"
-                    name="vehicles2"
-                    value={`${obj.name}`}
-                    checked={ind === selected2}
-                    disabled={obj.max_distance < distanceFromPlanet2}
-                    onChange={(e) => {
-                      setSelected2((prev) => {
-                        return ind === prev ? null : ind;
-                      });
-
-                      let vehicleList = [];
-                      formData.vehicle_names.forEach((data) => {
-                        vehicleList.push(data);
-                      });
-                      vehicleList.push(e.target.value);
-                      setFormData({
-                        ...formData,
-                        vehicle_names: vehicleList,
-                      });
-
-                      let newVehicles = [];
-                      let speedOfVehicle;
-                      vehicles2.forEach((obj) => {
-                        if (obj.name === e.target.value) {
-                          let obj1 = { ...obj };
-                          if (obj1.total_no > 0) obj1.total_no -= 1;
-                          newVehicles.push(obj1);
-                          speedOfVehicle = obj1.speed;
-                        } else {
-                          newVehicles.push(obj);
-                        }
-                      });
-
-                      setVehicles2(newVehicles);
-                      let presentPlanetList = [];
-                      planets2.forEach((obj) => {
-                        if (!formData.planet_names.includes(obj.name))
-                          presentPlanetList.push(obj);
-                        else
-                          setTimeTaken(
-                            timeTaken + obj.distance / speedOfVehicle
-                          );
-                      });
-
-                      setPlanets3(presentPlanetList);
-                    }}
-                  />
-                  <label
-                    className={
-                      obj.max_distance < distanceFromPlanet2 ? "label-font" : ""
-                    }
-                  >{`${obj.name} (${obj.total_no})`}</label>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="each-dropdown-layout">
-          <label>Destination 3</label>
-          <select
-            name="planets3"
-            id="3"
-            onChange={async (e) => {
-              if (formData.planet_names.length === 3) {
-                formData.planet_names.pop();
-              }
-              let planetNames = [];
-              formData.planet_names.forEach((data) => {
-                planetNames.push(data);
-              });
-              planetNames.push(e.target.value);
-
-              setFormData({
-                ...formData,
-                planet_names: planetNames,
-              });
-              planets.forEach((data) => {
-                if (data.name === e.target.value) {
-                  setDistanceFromPlanet3(data.distance);
-                }
-              });
-              setVehicles3(vehicles2);
-            }}
-          >
-            <option value="" default>
-              Select
-            </option>
-            {planets3.map((obj) => {
-              return (
-                <option key={obj.name} id={`${obj.name}`} value={`${obj.name}`}>
-                  {obj.name}
-                </option>
-              );
-            })}
-          </select>
-
-          <div className="radio-list-layout">
-            {vehicles3.map((obj, ind) => {
-              return (
-                <div key={ind} className="radio-button-layout">
-                  <input
-                    type="radio"
-                    name="vehicles3"
-                    value={`${obj.name}`}
-                    checked={ind === selected3}
-                    disabled={obj.max_distance < distanceFromPlanet3}
-                    onChange={(e) => {
-                      setSelected3((prev) => {
-                        return ind === prev ? null : ind;
-                      });
-
-                      let vehicleList = [];
-                      formData.vehicle_names.forEach((data) => {
-                        vehicleList.push(data);
-                      });
-                      vehicleList.push(e.target.value);
-                      setFormData({
-                        ...formData,
-                        vehicle_names: vehicleList,
-                      });
-
-                      let newVehicles = [];
-                      let speedOfVehicle;
-                      vehicles3.forEach((obj) => {
-                        if (obj.name === e.target.value) {
-                          let obj1 = { ...obj };
-                          if (obj1.total_no > 0) obj1.total_no -= 1;
-                          newVehicles.push(obj1);
-                          speedOfVehicle = obj1.speed;
-                        } else {
-                          newVehicles.push(obj);
-                        }
-                      });
-
-                      setVehicles3(newVehicles);
-                      let presentPlanetList = [];
-                      planets3.forEach((obj) => {
-                        if (!formData.planet_names.includes(obj.name))
-                          presentPlanetList.push(obj);
-                        else
-                          setTimeTaken(
-                            timeTaken + obj.distance / speedOfVehicle
-                          );
-                      });
-
-                      setPlanets4(presentPlanetList);
-                    }}
-                  />
-                  <label
-                    className={
-                      obj.max_distance < distanceFromPlanet3 ? "label-font" : ""
-                    }
-                  >{`${obj.name} (${obj.total_no})`}</label>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="each-dropdown-layout">
-          <label>Destination 4</label>
-          <select
-            name="planets4"
-            id="4"
-            onChange={async (e) => {
-              if (formData.planet_names.length === 4) {
-                formData.planet_names.pop();
-              }
-              let planetNames = [];
-              formData.planet_names.forEach((data) => {
-                planetNames.push(data);
-              });
-              planetNames.push(e.target.value);
-
-              setFormData({
-                ...formData,
-                planet_names: planetNames,
-              });
-
-              setVehicles4(vehicles3);
-              planets.forEach((data) => {
-                if (data.name === e.target.value) {
-                  setDistanceFromPlanet4(data.distance);
-                }
-              });
-            }}
-          >
-            <option value="" default>
-              Select
-            </option>
-            {planets4.map((obj) => {
-              return (
-                <option key={obj.name} id={`${obj.name}`} value={`${obj.name}`}>
-                  {obj.name}
-                </option>
-              );
-            })}
-          </select>
-
-          <div className="radio-list-layout">
-            {vehicles4.map((obj, ind) => {
-              return (
-                <div key={ind} className="radio-button-layout">
-                  <input
-                    type="radio"
-                    name="vehicles4"
-                    value={`${obj.name}`}
-                    checked={ind === selected4}
-                    disabled={obj.max_distance < distanceFromPlanet4}
-                    onChange={(e) => {
-                      setSelected4((prev) => {
-                        return ind === prev ? null : ind;
-                      });
-
-                      let vehicleList = [];
-                      formData.vehicle_names.forEach((data) => {
-                        vehicleList.push(data);
-                      });
-                      vehicleList.push(e.target.value);
-                      setFormData({
-                        ...formData,
-                        vehicle_names: vehicleList,
-                      });
-
-                      let newVehicles = [];
-                      let speedOfVehicle;
-                      vehicles4.forEach((obj) => {
-                        if (obj.name === e.target.value) {
-                          let obj1 = { ...obj };
-                          if (obj1.total_no > 0) obj1.total_no -= 1;
-                          newVehicles.push(obj1);
-                          speedOfVehicle = obj1.speed;
-                        } else {
-                          newVehicles.push(obj);
-                        }
-                      });
-
-                      planets4.forEach((obj) => {
-                        if (formData.planet_names.includes(obj.name))
-                          setTimeTaken(
-                            timeTaken + obj.distance / speedOfVehicle
-                          );
-                      });
-
-                      setVehicles4(newVehicles);
-                    }}
-                  />
-                  <label
-                    className={
-                      obj.max_distance < distanceFromPlanet4 ? "label-font" : ""
-                    }
-                  >{`${obj.name} (${obj.total_no})`}</label>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <Planet4
+          originalPlanetsList={originalPlanetsList}
+          planets={planets4}
+          prevVehicle={vehicles3}
+          vehicles={vehicles4}
+          setVehicles={setVehicles4}
+          selected={selected4}
+          setSelected={setSelected4}
+          distanceFromPlanet={distanceFromPlanet4}
+          setDistanceFromPlanet={setDistanceFromPlanet4}
+          formData={formData}
+          setFormData={setFormData}
+          timeTaken={timeTaken}
+          setTimeTaken={setTimeTaken}
+        />
       </div>
 
       <div className="time-layout">
@@ -544,7 +209,7 @@ const Falcone = () => {
         </button>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
