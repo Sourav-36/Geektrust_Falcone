@@ -153,6 +153,8 @@ const Falcone = () => {
         <div className="time-font">Time taken: {timeTaken}</div>
       </div>
 
+      <div id="error-msg"></div>
+
       <div className="find-button-layout">
         <button
           type="submit"
@@ -175,11 +177,12 @@ const Falcone = () => {
               console.log(err);
             }
 
+            let form = {
+              ...formData,
+              token: tokenJSON.token,
+            };
+
             try {
-              let form = {
-                ...formData,
-                token: tokenJSON.token,
-              };
               let findQueenResponse = await fetch(
                 "https://findfalcone.geektrust.com/find",
                 {
@@ -191,17 +194,34 @@ const Falcone = () => {
                   body: JSON.stringify(form),
                 }
               );
-              let jsonResponse = await findQueenResponse.json();
-              if (
-                jsonResponse.status === "success" &&
-                formData.planet_names.includes(jsonResponse.planet_name)
-              ) {
-                window.localStorage.setItem("planet", jsonResponse.planet_name);
-                window.localStorage.setItem("time", timeTaken);
+              if (findQueenResponse.status !== 400) {
+                let jsonResponse = await findQueenResponse.json();
+                if (jsonResponse.status === "success") {
+                  window.localStorage.setItem(
+                    "planet",
+                    jsonResponse.planet_name
+                  );
+                  window.localStorage.setItem("time", timeTaken);
+                }
+                history.push("/result", { from: "Falcone" });
+              } else {
+                let jsonResponse = await findQueenResponse.json();
+                document
+                  .querySelector("#error-msg")
+                  .setAttribute("class", "error-margin");
+                document.querySelector("#error-msg").innerHTML = `
+                  <div class="error-message-layout" >
+                    <div id="error-msg" class="error-font">
+                      ERROR : ${jsonResponse.error}
+                    </div>
+                  </div>`;
+                setTimeout(() => {
+                  document.querySelector("#error-msg").innerHTML = "";
+                  document.querySelector("#error-msg").removeAttribute("class");
+                }, 3000);
               }
-              history.push("/result", { from: "Falcone" });
             } catch (err) {
-              console.log(err.error);
+              console.log(err);
             }
           }}
         >

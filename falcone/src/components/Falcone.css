@@ -52,8 +52,28 @@
   text-align: center;
 }
 
+.error-margin {
+  margin-bottom: 5rem;
+}
+
+.error-message-layout {
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-font {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+  color: red;
+}
+
 .find-button-layout {
-  height: 15vh;
+  height: 10vh;
   width: 100%;
   display: flex;
   justify-content: center;
