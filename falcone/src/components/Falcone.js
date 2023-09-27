@@ -159,6 +159,7 @@ const Falcone = () => {
           className="find-button"
           onClick={async (e) => {
             e.preventDefault();
+            let tokenJSON;
             try {
               let response = await fetch(
                 "https://findfalcone.geektrust.com/token",
@@ -169,39 +170,38 @@ const Falcone = () => {
                   },
                 }
               );
-              let tokenJSON = await response.json();
+              tokenJSON = await response.json();
+            } catch (err) {
+              console.log(err);
+            }
 
+            try {
               let form = {
                 ...formData,
                 token: tokenJSON.token,
               };
-
-              try {
-                let findQueenResponse = await fetch(
-                  "https://findfalcone.geektrust.com/find",
-                  {
-                    method: "POST",
-                    headers: {
-                      accept: "application/json",
-                      "content-type": "application/json",
-                    },
-                    body: JSON.stringify(form),
-                  }
-                );
-                let jsonResponse = await findQueenResponse.json();
-                if (jsonResponse.status === "success") {
-                  window.localStorage.setItem(
-                    "planet",
-                    jsonResponse.planet_name
-                  );
-                  window.localStorage.setItem("time", timeTaken);
+              let findQueenResponse = await fetch(
+                "https://findfalcone.geektrust.com/find",
+                {
+                  method: "POST",
+                  headers: {
+                    accept: "application/json",
+                    "content-type": "application/json",
+                  },
+                  body: JSON.stringify(form),
                 }
-                history.push("/result", { from: "Falcone" });
-              } catch (err) {
-                if (err.status === 400) console.log(err.error);
+              );
+              let jsonResponse = await findQueenResponse.json();
+              if (
+                jsonResponse.status === "success" &&
+                formData.planet_names.includes(jsonResponse.planet_name)
+              ) {
+                window.localStorage.setItem("planet", jsonResponse.planet_name);
+                window.localStorage.setItem("time", timeTaken);
               }
+              history.push("/result", { from: "Falcone" });
             } catch (err) {
-              console.log(err);
+              console.log(err.error);
             }
           }}
         >

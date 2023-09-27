@@ -28,7 +28,6 @@ const Planet1 = ({
     <div className="each-dropdown-layout">
       <label>Destination 1</label>
       <select
-        name="planets1"
         id="1"
         onChange={async (e) => {
           if (formData.planet_names.length === 1) {
@@ -82,6 +81,13 @@ const Planet1 = ({
                     return ind === prev ? null : ind;
                   });
 
+                  let removedVehicle = "";
+                  if (formData.vehicle_names.length === 1) {
+                    removedVehicle =
+                      formData.vehicle_names[formData.vehicle_names.length - 1];
+                    formData.vehicle_names.pop();
+                  }
+
                   let vehicleList = [];
                   formData.vehicle_names.forEach((data) => {
                     vehicleList.push(data);
@@ -93,13 +99,22 @@ const Planet1 = ({
                   });
 
                   let newVehicles = [];
-                  let speedOfVehicle;
+                  let speedOfVehicle = 0;
                   vehicles.forEach((obj) => {
                     if (obj.name === e.target.value) {
                       let obj1 = { ...obj };
-                      if (obj1.total_no > 0) obj1.total_no -= 1;
+                      if (obj1.total_no > 0) {
+                        obj1.total_no -= 1;
+                        speedOfVehicle = obj1.speed;
+                      }
                       newVehicles.push(obj1);
-                      speedOfVehicle = obj1.speed;
+                    } else if (
+                      obj.name === removedVehicle &&
+                      removedVehicle !== ""
+                    ) {
+                      let obj1 = { ...obj };
+                      obj1.total_no += 1;
+                      newVehicles.push(obj1);
                     } else {
                       newVehicles.push(obj);
                     }
@@ -111,7 +126,8 @@ const Planet1 = ({
                   planets.forEach((obj) => {
                     if (!formData.planet_names.includes(obj.name))
                       presentPlanetList.push(obj);
-                    else setTimeTaken(obj.distance / speedOfVehicle);
+                    else if (speedOfVehicle !== 0)
+                      setTimeTaken(obj.distance / speedOfVehicle);
                   });
 
                   setPlanets(presentPlanetList);

@@ -17,7 +17,6 @@ const Planet4 = ({
     <div className="each-dropdown-layout">
       <label>Destination 4</label>
       <select
-        name="planets4"
         id="4"
         onChange={async (e) => {
           if (formData.planet_names.length === 4) {
@@ -69,6 +68,13 @@ const Planet4 = ({
                     return ind === prev ? null : ind;
                   });
 
+                  let removedVehicle = "";
+                  if (formData.vehicle_names.length === 4) {
+                    removedVehicle =
+                      formData.vehicle_names[formData.vehicle_names.length - 1];
+                    formData.vehicle_names.pop();
+                  }
+
                   let vehicleList = [];
                   formData.vehicle_names.forEach((data) => {
                     vehicleList.push(data);
@@ -80,21 +86,44 @@ const Planet4 = ({
                   });
 
                   let newVehicles = [];
-                  let speedOfVehicle;
+                  let speedOfVehicle = 0,
+                    prevSpeedOfVehicle = 0;
                   vehicles.forEach((obj) => {
                     if (obj.name === e.target.value) {
                       let obj1 = { ...obj };
-                      if (obj1.total_no > 0) obj1.total_no -= 1;
+                      if (obj1.total_no > 0) {
+                        obj1.total_no -= 1;
+                        speedOfVehicle = obj1.speed;
+                      }
                       newVehicles.push(obj1);
-                      speedOfVehicle = obj1.speed;
+                    } else if (
+                      obj.name === removedVehicle &&
+                      removedVehicle !== ""
+                    ) {
+                      let obj1 = { ...obj };
+                      obj1.total_no += 1;
+                      prevSpeedOfVehicle = obj1.speed;
+                      newVehicles.push(obj1);
                     } else {
                       newVehicles.push(obj);
                     }
                   });
 
                   planets.forEach((obj) => {
-                    if (formData.planet_names.includes(obj.name))
-                      setTimeTaken(timeTaken + obj.distance / speedOfVehicle);
+                    if (
+                      formData.planet_names.includes(obj.name) &&
+                      speedOfVehicle !== 0
+                    ) {
+                      if (prevSpeedOfVehicle !== 0) {
+                        setTimeTaken(
+                          timeTaken +
+                            obj.distance / speedOfVehicle -
+                            obj.distance / prevSpeedOfVehicle
+                        );
+                      } else {
+                        setTimeTaken(timeTaken + obj.distance / speedOfVehicle);
+                      }
+                    }
                   });
 
                   setVehicles(newVehicles);
