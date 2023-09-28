@@ -72,7 +72,7 @@ const Planet1 = ({
             <div key={ind} className="radio-button-layout">
               <input
                 type="radio"
-                name="vehicles"
+                id="1"
                 value={`${obj.name}`}
                 checked={ind === selected}
                 disabled={obj.max_distance < distanceFromPlanet}
