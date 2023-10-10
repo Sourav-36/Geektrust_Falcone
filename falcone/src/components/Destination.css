@@ -1,0 +1,18 @@
+.each-dropdown-layout {
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+  margin: 2rem;
+}
+
+.radio-list-layout {
+  margin-top: 1rem;
+}
+
+.radio-button-layout {
+  margin: 0.25rem 0rem;
+}
+
+.label-font {
+  opacity: 0.5;
+}

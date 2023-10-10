@@ -1,25 +1,40 @@
-const Planet4 = ({
-  originalPlanetsList,
+import "./Destination.css";
+
+const Destination = ({
+  userId,
+  setUserId,
   planets,
-  prevVehicle,
+  setPlanets,
   vehicles,
   setVehicles,
-  selected,
-  setSelected,
-  distanceFromPlanet,
-  setDistanceFromPlanet,
+  prevVehicles,
+  setPrevVehicles,
   formData,
   setFormData,
+  distanceFromPlanet,
+  setDistanceFromPlanet,
+  originalPlanetsList,
   timeTaken,
   setTimeTaken,
+  selected,
+  setSelected,
 }) => {
+  let fetchVehicles = async () => {
+    try {
+      let response = await fetch("https://findfalcone.geektrust.com/vehicles");
+      return response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="each-dropdown-layout">
-      <label>Destination 4</label>
+      <label>Destination {userId}</label>
       <select
-        id="4"
+        id={userId}
         onChange={async (e) => {
-          if (formData.planet_names.length === 4) {
+          if (formData.planet_names.length === Number(e.target.id)) {
             formData.planet_names.pop();
           }
           let planetNames = [];
@@ -33,12 +48,18 @@ const Planet4 = ({
             planet_names: planetNames,
           });
 
-          setVehicles(prevVehicle);
           originalPlanetsList.forEach((data) => {
             if (data.name === e.target.value) {
               setDistanceFromPlanet(data.distance);
             }
           });
+
+          if (userId === 1) {
+            let response = await fetchVehicles();
+            setVehicles(response);
+          } else {
+            setVehicles(prevVehicles);
+          }
         }}
       >
         <option value="" default>
@@ -59,21 +80,22 @@ const Planet4 = ({
             <div key={ind} className="radio-button-layout">
               <input
                 type="radio"
-                id="4"
+                id={`${userId}`}
                 value={`${obj.name}`}
                 checked={ind === selected}
                 disabled={obj.max_distance < distanceFromPlanet}
                 onChange={(e) => {
+                  setUserId(Number(e.target.id) + 1);
                   setSelected((prev) => {
                     return ind === prev ? null : ind;
                   });
 
-                  let removedVehicle = "";
-                  if (formData.vehicle_names.length === 4) {
-                    removedVehicle =
-                      formData.vehicle_names[formData.vehicle_names.length - 1];
-                    formData.vehicle_names.pop();
-                  }
+                  //   let removedVehicle = "";
+                  //   if (formData.vehicle_names.length === e.target.id) {
+                  //     removedVehicle =
+                  //       formData.vehicle_names[formData.vehicle_names.length - 1];
+                  //     formData.vehicle_names.pop();
+                  //   }
 
                   let vehicleList = [];
                   formData.vehicle_names.forEach((data) => {
@@ -86,8 +108,7 @@ const Planet4 = ({
                   });
 
                   let newVehicles = [];
-                  let speedOfVehicle = 0,
-                    prevSpeedOfVehicle = 0;
+                  let speedOfVehicle = 0;
                   vehicles.forEach((obj) => {
                     if (obj.name === e.target.value) {
                       let obj1 = { ...obj };
@@ -96,37 +117,24 @@ const Planet4 = ({
                         speedOfVehicle = obj1.speed;
                       }
                       newVehicles.push(obj1);
-                    } else if (
-                      obj.name === removedVehicle &&
-                      removedVehicle !== ""
-                    ) {
-                      let obj1 = { ...obj };
-                      obj1.total_no += 1;
-                      prevSpeedOfVehicle = obj1.speed;
-                      newVehicles.push(obj1);
                     } else {
                       newVehicles.push(obj);
                     }
                   });
 
+                  setVehicles([]);
+                  setPrevVehicles(newVehicles);
+                  setSelected(null);
+
+                  let presentPlanetList = [];
                   planets.forEach((obj) => {
-                    if (
-                      formData.planet_names.includes(obj.name) &&
-                      speedOfVehicle !== 0
-                    ) {
-                      if (prevSpeedOfVehicle !== 0) {
-                        setTimeTaken(
-                          timeTaken +
-                            obj.distance / speedOfVehicle -
-                            obj.distance / prevSpeedOfVehicle
-                        );
-                      } else {
-                        setTimeTaken(timeTaken + obj.distance / speedOfVehicle);
-                      }
-                    }
+                    if (!formData.planet_names.includes(obj.name))
+                      presentPlanetList.push(obj);
+                    else if (speedOfVehicle !== 0)
+                      setTimeTaken(timeTaken + obj.distance / speedOfVehicle);
                   });
 
-                  setVehicles(newVehicles);
+                  setPlanets(presentPlanetList);
                 }}
               />
               <label
@@ -142,4 +150,4 @@ const Planet4 = ({
   );
 };
 
-export default Planet4;
+export default Destination;

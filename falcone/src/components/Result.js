@@ -3,7 +3,7 @@ import Header from "./Header.js";
 import Footer from "./Footer.js";
 import { useHistory } from "react-router-dom";
 
-const Result = (props) => {
+const Result = () => {
   let history = useHistory();
   return (
     <>

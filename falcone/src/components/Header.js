@@ -1,22 +1,12 @@
 import "./Header.css";
 
 const Header = ({
-  setPlanet1,
-  setVehicle1,
-  setSelected1,
-  setDistanceFromPlanet1,
-  setPlanet2,
-  setVehicle2,
-  setSelected2,
-  setDistanceFromPlanet2,
-  setPlanet3,
-  setVehicle3,
-  setSelected3,
-  setDistanceFromPlanet3,
-  setPlanet4,
-  setVehicle4,
-  setSelected4,
-  setDistanceFromPlanet4,
+  setUserId,
+  setPlanets,
+  setOriginalPlanetsList,
+  setVehicles,
+  setSelected,
+  setDistanceFromPlanet,
   setTimeTaken,
   setFormData,
 }) => {
@@ -36,22 +26,11 @@ const Header = ({
           className="reset-button"
           disabled={window.location.pathname === "/result"}
           onClick={async (e) => {
-            setPlanet1([]);
-            setVehicle1([]);
-            setSelected1(null);
-            setDistanceFromPlanet1(0);
-            setPlanet2([]);
-            setVehicle2([]);
-            setSelected2(null);
-            setDistanceFromPlanet2(0);
-            setPlanet3([]);
-            setVehicle3([]);
-            setSelected3(null);
-            setDistanceFromPlanet3(0);
-            setPlanet4([]);
-            setVehicle4([]);
-            setSelected4(null);
-            setDistanceFromPlanet4(0);
+            setUserId(1);
+            setPlanets([]);
+            setVehicles([]);
+            setSelected(null);
+            setDistanceFromPlanet(0);
             setTimeTaken(0);
             setFormData({
               planet_names: [],
@@ -59,7 +38,8 @@ const Header = ({
             });
 
             let response = await fetchPlanets();
-            setPlanet1(response);
+            setPlanets(response);
+            setOriginalPlanetsList(response);
           }}
         >
           Reset
