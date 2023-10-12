@@ -90,13 +90,6 @@ const Destination = ({
                     return ind === prev ? null : ind;
                   });
 
-                  //   let removedVehicle = "";
-                  //   if (formData.vehicle_names.length === e.target.id) {
-                  //     removedVehicle =
-                  //       formData.vehicle_names[formData.vehicle_names.length - 1];
-                  //     formData.vehicle_names.pop();
-                  //   }
-
                   let vehicleList = [];
                   formData.vehicle_names.forEach((data) => {
                     vehicleList.push(data);

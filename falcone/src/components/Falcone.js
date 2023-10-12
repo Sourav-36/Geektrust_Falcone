@@ -31,6 +31,23 @@ const Falcone = () => {
     }
   };
 
+  let resetFunction = async () => {
+    setUserId(1);
+    setPlanets([]);
+    setVehicles([]);
+    setSelected(null);
+    setDistanceFromPlanet(0);
+    setTimeTaken(0);
+    setFormData({
+      planet_names: [],
+      vehicle_names: [],
+    });
+
+    let response = await fetchPlanets();
+    setPlanets(response);
+    setOriginalPlanetsList(response);
+  };
+
   useEffect(() => {
     (async () => {
       let response = await fetchPlanets();
@@ -42,14 +59,9 @@ const Falcone = () => {
   return (
     <div>
       <Header
-        setUserId={setUserId}
-        setPlanets={setPlanets}
-        setOriginalPlanetsList={setOriginalPlanetsList}
-        setVehicles={setVehicles}
-        setSelected={setSelected}
-        setDistanceFromPlanet={setDistanceFromPlanet}
-        setTimeTaken={setTimeTaken}
-        setFormData={setFormData}
+        handleReset={async () => {
+          await resetFunction();
+        }}
       />
       <div className="body-layout">
         <div className="body-font">Select planets you want to search in: </div>

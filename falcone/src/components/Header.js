@@ -1,20 +1,6 @@
 import "./Header.css";
 
-const Header = ({
-  setUserId,
-  setPlanets,
-  setOriginalPlanetsList,
-  setVehicles,
-  setSelected,
-  setDistanceFromPlanet,
-  setTimeTaken,
-  setFormData,
-}) => {
-  let fetchPlanets = async () => {
-    let response = await fetch("https://findfalcone.geektrust.com/planets");
-    return response.json();
-  };
-
+const Header = ({ handleReset }) => {
   return (
     <div className="header-layout">
       <div className="title-layout">
@@ -25,22 +11,7 @@ const Header = ({
         <button
           className="reset-button"
           disabled={window.location.pathname === "/result"}
-          onClick={async (e) => {
-            setUserId(1);
-            setPlanets([]);
-            setVehicles([]);
-            setSelected(null);
-            setDistanceFromPlanet(0);
-            setTimeTaken(0);
-            setFormData({
-              planet_names: [],
-              vehicle_names: [],
-            });
-
-            let response = await fetchPlanets();
-            setPlanets(response);
-            setOriginalPlanetsList(response);
-          }}
+          onClick={handleReset}
         >
           Reset
         </button>
